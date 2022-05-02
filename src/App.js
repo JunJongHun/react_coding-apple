@@ -2,7 +2,7 @@ import "./App.css";
 import { useState } from "react";
 function App() {
   let [logo, setLogo] = useState("React Start");
-  let [title, setTitle] = useState(["frist", "second", "third"]);
+  let [title, setTitle] = useState(["frist", "second", "aaa"]);
   let [date, setDate] = useState(new Date().toLocaleString());
   let [like, setLike] = useState(0);
   let [name, nameTitle] = useState("여자코트추천");
@@ -18,7 +18,6 @@ function App() {
           <span onClick={() => setLike((prev) => prev + 1)}> 👍</span>
           {like}
         </h4>
-
         <p>{date}</p>
         <button
           onClick={() => {
@@ -39,6 +38,23 @@ function App() {
       <div className="list">
         <h4>{title[2]}</h4>
         <p>{date}</p>
+      </div>
+      <button
+        onClick={() => {
+          setTitle((prev) => {
+            let copy = [...prev];
+            copy.sort();
+            return copy;
+          });
+        }}
+      >
+        제목 순서 재배치
+      </button>
+
+      <div className="modal">
+        <h4>제목</h4>
+        <p>날짜</p>
+        <p>상세내용</p>
       </div>
     </div>
   );
