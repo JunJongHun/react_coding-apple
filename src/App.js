@@ -6,18 +6,25 @@ function App() {
   let [date, setDate] = useState(new Date().toLocaleString());
   let [like, setLike] = useState(0);
   let [name, nameTitle] = useState("여자코트추천");
-
+  let [modal, setModal] = useState(false);
   return (
     <div className="App">
       <div>
         <h4 className="black-nav">{logo}</h4>
       </div>
       <div className="list">
-        <h4>
+        <h4
+          onClick={() => {
+            setModal((prev) => {
+              return !prev;
+            });
+          }}
+        >
           {title[0]}
-          <span onClick={() => setLike((prev) => prev + 1)}> 👍</span>
-          {like}
         </h4>
+        <span onClick={() => setLike((prev) => prev + 1)}> 👍</span>
+        {like}
+
         <p>{date}</p>
         <button
           onClick={() => {
@@ -51,11 +58,17 @@ function App() {
         제목 순서 재배치
       </button>
 
-      <div className="modal">
-        <h4>제목</h4>
-        <p>날짜</p>
-        <p>상세내용</p>
-      </div>
+      {modal ? <Modal></Modal> : null}
+    </div>
+  );
+}
+
+function Modal() {
+  return (
+    <div className="modal">
+      <h4>title</h4>
+      <p>day</p>
+      <p>description</p>
     </div>
   );
 }
