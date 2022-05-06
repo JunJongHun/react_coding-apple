@@ -5,9 +5,9 @@ function App() {
   let [title, setTitle] = useState(["frist", "second", "aaa"]);
   let [date, setDate] = useState(new Date().toLocaleString());
   let [like, setLike] = useState([0, 0, 0]);
-  let [name, nameTitle] = useState("여자코트추천");
   let [modal, setModal] = useState(false);
   let [t, setT] = useState(0);
+  let [inputValue, setInputValue] = useState("");
 
   const showModal = () => {
     setModal(!modal);
@@ -24,12 +24,6 @@ function App() {
   const sortTitle = () => {
     let copy = [...title];
     copy.sort();
-    setTitle(copy);
-  };
-
-  const changeTitle = () => {
-    let copy = [...title];
-    copy[0] = name;
     setTitle(copy);
   };
 
@@ -50,6 +44,7 @@ function App() {
             >
               {value}
             </h4>
+
             <span
               onClick={() => {
                 countUpLike(index);
@@ -60,15 +55,40 @@ function App() {
             {like[index]}
 
             <p>{date}</p>
+            <button
+              onClick={() => {
+                setTitle((prev) => {
+                  let copy = [...title];
+                  copy.splice(index, 1);
+                  return copy;
+                });
+              }}
+            >
+              delete
+            </button>
           </div>
         );
       })}
 
-      <button onClick={sortTitle}>제목 순서 재배치</button>
+      <input
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          console.log(inputValue);
+        }}
+      ></input>
+      <button
+        onClick={() => {
+          setTitle((prev) => {
+            let copy = [...title];
+            copy.unshift(inputValue);
+            return copy;
+          });
+        }}
+      >
+        추가
+      </button>
 
-      {modal ? (
-        <Modal title={title} t={t} changeTitle={changeTitle}></Modal>
-      ) : null}
+      {modal ? <Modal title={title} t={t}></Modal> : null}
     </div>
   );
 }
@@ -77,9 +97,9 @@ function Modal(props) {
   return (
     <div className="modal">
       <h4>{props.title[props.t]}</h4>
+
       <p>day</p>
       <p>description</p>
-      <button onClick={props.changeTitle}>제목 수정</button>
     </div>
   );
 }
