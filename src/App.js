@@ -7,12 +7,10 @@ function App() {
   let [like, setLike] = useState([0, 0, 0]);
   let [name, nameTitle] = useState("여자코트추천");
   let [modal, setModal] = useState(false);
+  let [t, setT] = useState(0);
 
   const showModal = () => {
-    // setModal(!modal);
-    setModal((prev) => {
-      return !prev;
-    });
+    setModal(!modal);
   };
 
   const countUpLike = (index) => {
@@ -43,8 +41,15 @@ function App() {
 
       {title.map((value, index) => {
         return (
-          <div className="list">
-            <h4 onClick={showModal}>{value}</h4>
+          <div className="list" key={index.toString()}>
+            <h4
+              onClick={() => {
+                setT(index);
+                showModal();
+              }}
+            >
+              {value}
+            </h4>
             <span
               onClick={() => {
                 countUpLike(index);
@@ -61,7 +66,9 @@ function App() {
 
       <button onClick={sortTitle}>제목 순서 재배치</button>
 
-      {modal ? <Modal title={title} changeTitle={changeTitle}></Modal> : null}
+      {modal ? (
+        <Modal title={title} t={t} changeTitle={changeTitle}></Modal>
+      ) : null}
     </div>
   );
 }
@@ -69,7 +76,7 @@ function App() {
 function Modal(props) {
   return (
     <div className="modal">
-      <h4>{props.title[0]}</h4>
+      <h4>{props.title[props.t]}</h4>
       <p>day</p>
       <p>description</p>
       <button onClick={props.changeTitle}>제목 수정</button>
