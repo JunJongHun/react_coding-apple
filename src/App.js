@@ -57,11 +57,12 @@ function App() {
             <p>{date}</p>
             <button
               onClick={() => {
-                setTitle((prev) => {
-                  let copy = [...title];
-                  copy.splice(index, 1);
-                  return copy;
-                });
+                let copy = [...title];
+                copy.splice(index, 1);
+                setTitle(copy);
+                let copy2 = [...like];
+                copy2.splice(index, 1);
+                setLike(copy2);
               }}
             >
               delete
@@ -69,24 +70,26 @@ function App() {
           </div>
         );
       })}
-
-      <input
-        onChange={(e) => {
-          setInputValue(e.target.value);
-          console.log(inputValue);
-        }}
-      ></input>
-      <button
-        onClick={() => {
-          setTitle((prev) => {
+      <from>
+        <input
+          required
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            console.log(inputValue);
+          }}
+        ></input>
+        <input
+          type="submit"
+          onClick={() => {
             let copy = [...title];
+            let copy2 = [...like];
             copy.unshift(inputValue);
-            return copy;
-          });
-        }}
-      >
-        추가
-      </button>
+            copy2.unshift(0);
+            setLike(copy2);
+            setTitle(copy);
+          }}
+        ></input>
+      </from>
 
       {modal ? <Modal title={title} t={t}></Modal> : null}
     </div>
