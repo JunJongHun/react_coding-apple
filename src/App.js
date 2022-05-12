@@ -4,13 +4,27 @@ function App() {
   let [logo, setLogo] = useState("React Start");
   let [title, setTitle] = useState(["frist", "second", "aaa"]);
   let [date, setDate] = useState(new Date().toLocaleString());
-  let [like, setLike] = useState(0);
-  let [name, nameTitle] = useState("여자코트추천");
+  let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+  let [t, setT] = useState(0);
+  let [inputValue, setInputValue] = useState("");
 
-  const titleSort = (prev) => {
-    let copy = [...prev];
-    setTitle(copy.sort());
+  const showModal = () => {
+    setModal(!modal);
+  };
+
+  const countUpLike = (index) => {
+    setLike((prev) => {
+      let copy = [...like];
+      copy[index] += 1;
+      return copy;
+    });
+  };
+
+  const sortTitle = () => {
+    let copy = [...title];
+    copy.sort();
+    setTitle(copy);
   };
 
   return (
@@ -27,51 +41,75 @@ function App() {
         </div>
         <h4 className="black-nav">{logo}</h4>
       </div>
-      <div className="list">
-        <h4
-          onClick={() => {
-            setModal((prev) => {
-              return !prev;
-            });
-          }}
-        >
-          {title[0]}
-        </h4>
-        <span onClick={() => setLike((prev) => prev + 1)}> 👍</span>
-        {like}
 
-        <p>{date}</p>
-        <button
-          onClick={() => {
-            setTitle((prev) => {
-              let copy = [...prev];
-              copy[0] = name;
-              return copy;
-            });
-          }}
-        >
-          제목수정
-        </button>
-      </div>
-      <div className="list">
-        <h4>{title[1]}</h4>
-        <p>{date}</p>
-      </div>
-      <div className="list">
-        <h4>{title[2]}</h4>
-        <p>{date}</p>
-      </div>
-      <button onClick={titleSort}>제목 순서 재배치</button>
+      {title.map((value, index) => {
+        return (
+          <div className="list" key={index.toString()}>
+            <h4
+              onClick={() => {
+                setT(index);
+                showModal();
+              }}
+            >
+              {value}
+            </h4>
 
-      {modal ? <Modal></Modal> : null}
+            <span
+              onClick={() => {
+                countUpLike(index);
+              }}
+            >
+              👍
+            </span>
+            {like[index]}
+
+            <p>{date}</p>
+            <button
+              onClick={() => {
+                let copy = [...title];
+                copy.splice(index, 1);
+                setTitle(copy);
+                let copy2 = [...like];
+                copy2.splice(index, 1);
+                setLike(copy2);
+              }}
+            >
+              delete
+            </button>
+          </div>
+        );
+      })}
+      <from>
+        <input
+          required
+          onChange={(e) => {
+            setInputValue(e.target.value);
+            console.log(inputValue);
+          }}
+        ></input>
+        <input
+          type="submit"
+          onClick={() => {
+            let copy = [...title];
+            let copy2 = [...like];
+            copy.unshift(inputValue);
+            copy2.unshift(0);
+            setLike(copy2);
+            setTitle(copy);
+          }}
+        ></input>
+      </from>
+
+      {modal ? <Modal title={title} t={t}></Modal> : null}
     </div>
   );
 }
 
-function Modal() {
+function Modal(props) {
   return (
     <div className="modal">
-      <h4>title</h4>
+      <h4>{props.title[props.t]}</h4>
+
       <p>day</p>
       <p>description</p>
     </div>
