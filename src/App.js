@@ -7,9 +7,24 @@ function App() {
   let [like, setLike] = useState(0);
   let [name, nameTitle] = useState("여자코트추천");
   let [modal, setModal] = useState(false);
+
+  const titleSort = (prev) => {
+    let copy = [...prev];
+    setTitle(copy.sort());
+  };
+
   return (
     <div className="App">
       <div>
+        <div
+          onClick={() => {
+            title[0] = "data";
+            console.log(title);
+            setTitle(title);
+          }}
+        >
+          {title[0]}
+        </div>
         <h4 className="black-nav">{logo}</h4>
       </div>
       <div className="list">
@@ -46,17 +61,7 @@ function App() {
         <h4>{title[2]}</h4>
         <p>{date}</p>
       </div>
-      <button
-        onClick={() => {
-          setTitle((prev) => {
-            let copy = [...prev];
-            copy.sort();
-            return copy;
-          });
-        }}
-      >
-        제목 순서 재배치
-      </button>
+      <button onClick={titleSort}>제목 순서 재배치</button>
 
       {modal ? <Modal></Modal> : null}
     </div>
